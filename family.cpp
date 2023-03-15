@@ -1,39 +1,24 @@
 #include "family.h"
+#include <algorithm>
 
-
-family::family()
-	:m_members(std::vector<human>())
-{
-
+namespace {
+	bool human_name_comparator(const human& h1, const human& h2) {
+		return h1.name().length() < h2.name().length();
+	}
 }
 
-family::family(const human& hum)
-	: family()
-{
-	m_members.push_back(hum);
-}
 
-/*
-family::family(human hum)
-	: family(std::vector<human>{ hum })
-{
-
-}
-
-family::family(std::vector<human> members)
-	: m_members(members)
-{
-
-}
-*/
 
 void family::add_member(human hm)
 {
 	m_members.push_back(std::move(hm));
 }
 
-std::string family::longest_name_member() const
+const human& family::longest_name_member() const
 {
+
+	return *std::max_element(m_members.cbegin(), m_members.cend(), &human_name_comparator);
+	/*
 	std::string longest_name = m_members[0].name();
 	
 	for (int i = 1; i < m_members.size(); ++i)
@@ -45,9 +30,12 @@ std::string family::longest_name_member() const
 	}
 	
 	return longest_name;
+	*/
+
 }
 
-bool family::has_member_with_name(std::string name)
+// use std::any_of()
+bool family::has_member_with_name(std::string name) const
 {
 	for (auto member : m_members)
 	{
