@@ -7,25 +7,6 @@ namespace {
 	}
 }
 
-family::family(const human& hum)
-	:m_members()
-{
-	add_member(hum);
-}
-
-bool family::operator()(std::string name) const
-{
-	for (const human& member : m_members)
-	{
-		if (member.name() == name)
-			return true;
-	}
-
-	return false;
-
-}
-
-
 void family::add_member(human hm)
 {
 	m_members.push_back(std::move(hm));
@@ -36,6 +17,7 @@ const human& family::longest_name_member() const
 
 	return *std::max_element(m_members.cbegin(), m_members.cend(), &human_name_comparator);
 	/*
+	* original code
 	std::string longest_name = m_members[0].name();
 	
 	for (int i = 1; i < m_members.size(); ++i)
@@ -54,7 +36,7 @@ const human& family::longest_name_member() const
 // use std::any_of()
 bool family::has_member_with_name(std::string name) const
 {
-	human somone{ name };
-
-	return std::any_of(m_members.cbegin(), m_members.cend(), family(somone));
+	const human someone{ name };
+	
+	return std::any_of(m_members.cbegin(), m_members.cend(), someone);
 }

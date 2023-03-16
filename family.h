@@ -7,10 +7,6 @@
 class family
 {
 public:
-	family() = default;
-	family(const human&);
-
-	bool operator()(std::string) const;
 
 	void add_member(human member);
 	const human& longest_name_member() const;
