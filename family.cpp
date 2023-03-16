@@ -7,6 +7,23 @@ namespace {
 	}
 }
 
+family::family(const human& hum)
+	:m_members()
+{
+	add_member(hum);
+}
+
+bool family::operator()(std::string name) const
+{
+	for (const human& member : m_members)
+	{
+		if (member.name() == name)
+			return true;
+	}
+
+	return false;
+
+}
 
 
 void family::add_member(human hm)
@@ -37,11 +54,7 @@ const human& family::longest_name_member() const
 // use std::any_of()
 bool family::has_member_with_name(std::string name) const
 {
-	for (auto member : m_members)
-	{
-		if (member.name().compare(name) == 0)
-			return true;
-	}
-	
-	return false;
+	human somone{ name };
+
+	return std::any_of(m_members.cbegin(), m_members.cend(), family(somone));
 }
